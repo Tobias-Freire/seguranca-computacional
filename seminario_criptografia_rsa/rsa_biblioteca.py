@@ -1,10 +1,10 @@
 """
-RSA "de verdade" — usando a biblioteca `cryptography` (pip install cryptography).
+RSA usando a biblioteca `cryptography` (pip install cryptography).
 
 Diferenças em relação ao RSA didático:
   * OAEP  (cifração): adiciona aleatoriedade -> o mesmo texto gera cifras diferentes
   * PSS   (assinatura): padding probabilístico recomendado para assinaturas
-  * Implementação resistente a ataques de temporização (slide 30)
+  * Implementação resistente a ataques de temporização
 """
 
 from cryptography.exceptions import InvalidSignature

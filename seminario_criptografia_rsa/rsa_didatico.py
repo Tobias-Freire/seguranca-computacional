@@ -1,9 +1,6 @@
 """
 RSA didático — implementação do zero (apenas biblioteca padrão do Python).
 
-Baseado em Stallings & Brown, "Computer Security: Principles and Practice",
-Caps. 2, 20 e 21 (Algoritmo RSA, funções de hash, assinatura digital).
-
 ATENÇÃO: este é o "RSA de livro-texto" (sem padding). Serve para ENTENDER o
 algoritmo. Em produção usa-se RSA com OAEP (cifração) e PSS (assinatura),
 como mostrado em rsa_biblioteca.py.

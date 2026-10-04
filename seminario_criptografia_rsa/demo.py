@@ -1,6 +1,4 @@
 """
-Demonstração ao vivo do seminário — RSA na prática.
-
 Uso:
     python3 demo.py            # interativo: ENTER avança cada etapa
     python3 demo.py --auto     # roda tudo direto (ensaio)
