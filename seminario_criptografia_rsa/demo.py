@@ -108,9 +108,6 @@ def etapa5_ataque():
         texto = rd.decifrar_texto(c, quebrada)
         print(f"  n de {bits:3d} bits: p={quebrada['p']:<14} q={quebrada['q']:<14} "
               f"{dt:8.3f} s  → '{VERM}{texto}{FIM}'")
-    print(f"\n  Pollard rho custa ~2^(bits/4): cada +16 bits em n ≈ 16× mais trabalho.")
-    print(f"  Recorde mundial (GNFS, 2020): RSA-250 = 829 bits, ~2700 anos de núcleo de CPU.")
-    print(f"  {VERDE}Por isso a recomendação é ≥ 2048 bits (slide 25).{FIM}")
     pausa()
 
 
