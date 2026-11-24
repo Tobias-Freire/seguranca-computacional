@@ -1,0 +1,5 @@
+# Lista branca de alvos permitidos para os scripts de ataque.
+# Um hostname por linha; correspondência exata. Linhas com # são comentários.
+honeypot
+hardened-ssh
+lab-fileserver

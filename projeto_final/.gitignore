@@ -1,0 +1,29 @@
+# Segredos e configuração local
+.env
+*.pem
+*.key
+
+# Dados gerados pelo laboratório (data/samples/ é versionado: plano B da demo)
+data/cowrie/log/*
+data/cowrie/downloads/*
+data/analysis/*
+data/hardened/*
+!.gitkeep
+
+# Relatórios gerados
+reports/*
+!reports/.gitkeep
+
+# Listas de senhas externas (ex.: SecLists), nunca versionadas
+attack/wordlists/external/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Arquivos locais do fluxo de trabalho
+HANDOFF.md
