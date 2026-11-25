@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 SCENARIO ?= baseline
 
-.PHONY: help up down attack report demo clean test
+.PHONY: help up down watch attack report demo clean test
 
 help: ## Lista os alvos disponíveis
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-10s %s\n", $$1, $$2}'
@@ -14,6 +14,9 @@ up: ## Sobe o laboratório
 
 down: ## Derruba os containers
 	docker compose down
+
+watch: ## Acompanha os eventos do honeypot em tempo real (logins, comandos, downloads)
+	@tail -n 0 -F data/cowrie/log/cowrie.json | jq -c --unbuffered 'select(.eventid|test("login|command.input|file_download")) | {evento:(.eventid|sub("cowrie\\.";"")), ip:.src_ip, usuario:.username, senha:.password, comando:.input, sha256:.shasum} | with_entries(select(.value != null))'
 
 attack: ## Executa um cenário: make attack SCENARIO=baseline (ainda não implementado)
 	@echo "ainda não implementado (Parte 5)"
