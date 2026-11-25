@@ -17,46 +17,46 @@ Plano: [plan.md](plan.md). Marque cada item ao concluir. Ao fim de cada parte, a
 
 ## Parte 2: Rede `lab_net` e honeypot Cowrie
 
-- [ ] Escolher e fixar a tag de `cowrie/cowrie` (via `COWRIE_TAG`)
-- [ ] Escrever `docker-compose.yml` com `lab_net` (`internal: true`), `honeypot` e `attacker1`, sem `ports:`
-- [ ] Escrever `honeypot/etc/cowrie.cfg` (hostname `srv-backup01`, banner OpenSSH, JSON log, Telnet desligado, downloads em volume)
-- [ ] Escrever `honeypot/etc/userdb.txt` só com `root:123456`, `admin:admin`, `pi:raspberry`, `ubuntu:ubuntu`
-- [ ] Tratar permissões dos volumes no `make up`
-- [ ] Criar `tests/smoke/test_phase1.sh`
-- [ ] Check: `docker compose up -d && docker compose ps` mostra `honeypot` e `attacker1` em execução
-- [ ] Check: `docker ps --format '{{.Ports}}'` sem mapeamento para o host
-- [ ] Check: `docker network inspect <projeto>_lab_net --format '{{.Internal}}'` retorna `true`
-- [ ] Check: login com `root`/`123456` em `honeypot:2222` funciona; com senha errada falha
-- [ ] Check: `cowrie.json` contém `cowrie.login.failed` e `cowrie.login.success`
+- [x] Escolher e fixar a tag de `cowrie/cowrie` (via `COWRIE_TAG`)
+- [x] Escrever `docker-compose.yml` com `lab_net` (`internal: true`), `honeypot` e `attacker1`, sem `ports:`
+- [x] Escrever `honeypot/etc/cowrie.cfg` (hostname `srv-backup01`, banner OpenSSH, JSON log, Telnet desligado, downloads em volume)
+- [x] Escrever `honeypot/etc/userdb.txt` só com `root:123456`, `admin:admin`, `pi:raspberry`, `ubuntu:ubuntu`
+- [x] Tratar permissões dos volumes no `make up`
+- [x] Criar `tests/smoke/test_phase1.sh`
+- [x] Check: `docker compose up -d && docker compose ps` mostra `honeypot` e `attacker1` em execução
+- [x] Check: `docker ps --format '{{.Ports}}'` sem mapeamento para o host
+- [x] Check: `docker network inspect <projeto>_lab_net --format '{{.Internal}}'` retorna `true`
+- [x] Check: login com `root`/`123456` em `honeypot:2222` funciona; com senha errada falha
+- [x] Check: `cowrie.json` contém `cowrie.login.failed` e `cowrie.login.success`
 
 ## Parte 3: Atacante base, listas e força bruta
 
-- [ ] Completar `attack/Dockerfile` (hydra, python3, paramiko, pyyaml, sshpass)
-- [ ] Criar `attack/wordlists/users.txt` (≈ 30) e `passwords.txt` (≈ 300) incluindo as 4 credenciais válidas
-- [ ] Implementar `attack/allowlist.sh` e `attack/allowlist.py` (correspondência exata)
-- [ ] Implementar `attack/bruteforce.sh` com `--users`, `--passwords`, `--threads`, `--help`
-- [ ] Adicionar `attacker2` e IPs fixos distintos na `lab_net`
-- [ ] Teste: alvo permitido passa na validação
-- [ ] Teste: `8.8.8.8`, `example.com` e `honeypot.evil.com` são recusados
-- [ ] Teste: `--help` sai com 0; opção desconhecida sai com 1
-- [ ] Check: `bruteforce.sh 8.8.8.8` imprime recusa e retorna 2
-- [ ] Check: `bruteforce.sh honeypot --threads 4` encontra as credenciais válidas e gera `login.failed` no log
-- [ ] Check: `docker inspect` mostra IPs distintos para `attacker1` e `attacker2`
+- [x] Completar `attack/Dockerfile` (hydra, python3, paramiko, pyyaml, sshpass)
+- [x] Criar `attack/wordlists/users.txt` (≈ 30) e `passwords.txt` (≈ 300) incluindo as 4 credenciais válidas
+- [x] Implementar `attack/allowlist.sh` e `attack/allowlist.py` (correspondência exata)
+- [x] Implementar `attack/bruteforce.sh` com `--users`, `--passwords`, `--threads`, `--help`
+- [x] Adicionar `attacker2` e IPs fixos distintos na `lab_net`
+- [x] Teste: alvo permitido passa na validação
+- [x] Teste: `8.8.8.8`, `example.com` e `honeypot.evil.com` são recusados
+- [x] Teste: `--help` sai com 0; opção desconhecida sai com 1
+- [x] Check: `bruteforce.sh 8.8.8.8` imprime recusa e retorna 2
+- [x] Check: `bruteforce.sh honeypot --threads 4` encontra as credenciais válidas e gera `login.failed` no log
+- [x] Check: `docker inspect` mostra IPs distintos para `attacker1` e `attacker2`
 
 ## Parte 4: Bot pós-login e servidor de `sample.sh`
 
-- [ ] Criar `attack/payload/sample.sh` (apenas `echo "fake payload"`)
-- [ ] Servir o payload por HTTP no container atacante (porta 8000) e criar o alias `lab-fileserver`
-- [ ] Implementar `build_plan(profile, seed)` como função pura
-- [ ] Implementar `attack/post_login_bot.py` (`--target`, `--user`, `--password`, `--sessions`, `--interval`, `--profile`, `--seed`, `--help`)
-- [ ] Teste: mesmo `seed` gera o mesmo plano
-- [ ] Teste: seeds diferentes geram planos diferentes
-- [ ] Teste: `stealthy` tem menos comandos e intervalos maiores que `noisy`
-- [ ] Teste: alvo fora da lista é recusado antes de abrir socket
-- [ ] Check: bot com `--sessions 2 --seed 1` sai com 0
-- [ ] Check: existe `cowrie.session.file_download` com `shasum` no log
-- [ ] Check: arquivo em `data/cowrie/downloads` sem bit de execução (`stat -c %a`)
-- [ ] Check: duas execuções com a mesma semente geram a mesma sequência de comandos
+- [x] Criar `attack/payload/sample.sh` (apenas `echo "fake payload"`)
+- [x] Servir o payload por HTTP no container atacante (porta 8000) e criar o alias `lab-fileserver`
+- [x] Implementar `build_plan(profile, seed)` como função pura
+- [x] Implementar `attack/post_login_bot.py` (`--target`, `--user`, `--password`, `--sessions`, `--interval`, `--profile`, `--seed`, `--help`)
+- [x] Teste: mesmo `seed` gera o mesmo plano
+- [x] Teste: seeds diferentes geram planos diferentes
+- [x] Teste: `stealthy` tem menos comandos e intervalos maiores que `noisy`
+- [x] Teste: alvo fora da lista é recusado antes de abrir socket
+- [x] Check: bot com `--sessions 2 --seed 1` sai com 0
+- [x] Check: existe `cowrie.session.file_download` com `shasum` no log
+- [x] Check: arquivo em `data/cowrie/downloads` sem bit de execução (`stat -c %a`)
+- [x] Check: duas execuções com a mesma semente geram a mesma sequência de comandos
 
 ## Parte 5: Orquestrador de cenários
 
