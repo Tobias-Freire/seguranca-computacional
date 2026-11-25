@@ -1,0 +1,63 @@
+# Laboratório de honeypot SSH. Nenhum serviço publica portas no host.
+name: honeypot-ssh
+
+services:
+  honeypot:
+    image: cowrie/cowrie:${COWRIE_TAG:-3.1.8}
+    hostname: srv-backup01
+    restart: unless-stopped
+    # O wget do Cowrie só baixa de IPs globais e não usa o DNS do Docker: o servidor do
+    # sample.sh fica na payload_net (endereço global, rede interna) e é resolvido por /etc/hosts.
+    extra_hosts:
+      - "lab-fileserver:203.0.114.3"
+    networks:
+      lab_net:
+        ipv4_address: 172.30.0.10
+      payload_net:
+        ipv4_address: 203.0.114.2
+    volumes:
+      - ./honeypot/etc/cowrie.cfg:/cowrie/cowrie-git/etc/cowrie.cfg:ro
+      - ./honeypot/etc/userdb.txt:/cowrie/cowrie-git/etc/userdb.txt:ro
+      - ./data/cowrie/log:/cowrie/cowrie-git/var/log/cowrie
+      - ./data/cowrie/downloads:/cowrie/cowrie-git/var/lib/cowrie/downloads
+
+  attacker1: &attacker
+    build: ./attack
+    hostname: attacker1
+    restart: unless-stopped
+    # Serve o sample.sh inofensivo em :8000 e mantém o container vivo
+    command: ["sh", "-c", "python3 -m http.server 8000 --directory /attack/payload & exec sleep infinity"]
+    volumes:
+      - ./attack:/attack:ro
+      - ./lab:/lab:ro
+    networks:
+      lab_net:
+        ipv4_address: 172.30.0.21
+      payload_net:
+        ipv4_address: 203.0.114.3
+        aliases:
+          - lab-fileserver
+
+  attacker2:
+    <<: *attacker
+    hostname: attacker2
+    networks:
+      lab_net:
+        ipv4_address: 172.30.0.22
+
+networks:
+  lab_net:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+  # Rede interna (sem rota para a internet) com endereços "globais" só para o download do
+  # sample.sh: o Cowrie recusa baixar de IPs privados. Nenhum pacote sai desta rede.
+  payload_net:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 203.0.114.0/29

@@ -1,0 +1,6 @@
+# Formato usuario:x:senha. Somente estas combinacoes fracas sao aceitas; as demais falham.
+# Atencao: o Cowrie le este arquivo como ASCII, entao nao use acentos aqui.
+root:x:123456
+admin:x:admin
+pi:x:raspberry
+ubuntu:x:ubuntu
